@@ -1,4 +1,5 @@
 var app 	= require('./app/app'),
+  appFallbackDevice = require('./app_fallback_device/app'),
 	request = require('supertest');
 
 describe('app',function(){
@@ -163,4 +164,15 @@ describe('app',function(){
       .end(done);
   	});
 	});
+
+  describe('GET /view from phone ', function () {
+    it('should fallback to desktop, render with desktop/index.ejs', function (done) {
+      request(appFallbackDevice)
+      .get('/')
+      .set('User-Agent', 'iPhone')
+      .expect(200)
+      .expect('<h1>fallback to desktop</h1>')
+      .end(done);
+    });
+  });
 });
